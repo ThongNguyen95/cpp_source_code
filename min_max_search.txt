@@ -1,0 +1,159 @@
+main() {
+	board = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+	end = false;
+	display_board(board)
+	while(!end) {
+		if (turn == player) {
+			move = get_input();
+			display_move
+		} else {	//AI
+			move = minimax(board);
+			display_move
+		}
+		make_move(board,move);
+		display_board(board);
+		end = terminalTest(board);
+	}
+}
+
+int minimax(List board) {	//return an action
+	int score = 2;	//max-value
+	int move = -1;
+	for (int i = 0; i < board.size(); i++) {
+		if (board[i] == "-") {
+			board[i] = "O";
+			int temp = maxVal(board);
+			if (temp < score) {
+				score = temp;
+				move = i;
+			}
+			board[i] = "-";
+		}
+	}
+	return move;
+}
+
+int maxVal(board) {	//return a utility score
+	if (terminalTest(board))
+		return utility(board);
+	int score = -2;
+	for (int i = 0; i < board.size(); i++) {
+		if (board[i] == "-") {
+			board[i] = "X";
+			int temp = minVal(board);
+			if (temp > score) {
+				score = temp;
+			}
+			board[i] = "-";
+		}
+	}
+	return score;
+}
+
+int minVal(board) {	//return a utility score
+	if (terminalTest(board))
+		return utility(board);
+	int score = 2;
+	for (int i = 0; i < board.size(); i++) {
+		if (board[i] == "-") {
+			board[i] = "O";
+			int temp = maxVal(board);
+			if (temp < score) {
+				score = temp;
+			}
+			board[i] = "-";
+		}
+	}
+	return score;
+}
+
+int utility(board) {
+	int score = 0;
+	for (int i = 0; i < 4; i++) {
+		a = board[i * 4 + 0];
+		b = board[i * 4 + 1];
+		c = board[i * 4 + 2];
+		d = board[i * 4 + 3];
+		if (a == b == c == d) {
+			if (a == "O") score = -1;
+			else if (a == "X") score = 1;
+		}
+
+		a = board[0 + i];
+		b = board[4 + i];
+		c = board[8 + i];
+		d = board[12 + i];
+		if (a == b == c == d) {
+			if (a == "O") score = -1;
+			else if (a == "X") score = 1;
+		}
+	}
+	a = board[0];
+	b = board[5];
+	c = board[10];
+	d = board[15];
+	if (a == b == c == d) {
+		if (a == "O") score = -1;
+		else if (a == "X") score = 1;
+	}
+
+	a = board[3];
+	b = board[6];
+	c = board[9];
+	d = board[12];
+	if (a == b == c == d) {
+		if (a == "O") score = -1;
+		else if (a == "X") score = 1;
+	}
+	return score;
+}
+
+
+bool termnalTest(board) {
+	bool end = true;
+	for (int i = 0; i < board.size(); i++) {
+		if (board[i] == "-") {
+			end = false;
+			break;
+		}
+	}
+	if (end == false) {
+		for (int i = 0; i < 4; i++) {
+			a = board[i * 4 + 0];
+			b = board[i * 4 + 1];
+			c = board[i * 4 + 2];
+			d = board[i * 4 + 3];
+			if (a == b == c == d) {
+				if (a == "O" || a == "X") bool = true;
+			}
+			if (end == false) {
+				a = board[0 + i];
+				b = board[4 + i];
+				c = board[8 + i];
+				d = board[12 + i];
+				if (a == b == c == d) {
+					if (a == "O" || a == "X") bool = true;
+				}
+			}
+		}
+	}
+	if (end == false) {
+		a = board[0];
+		b = board[5];
+		c = board[10];
+		d = board[15];
+		if (a == b == c == d) {
+			if (a == "O" || a == "X") bool = true;
+		}
+	}
+	if (end == false) {
+		a = board[3];
+		b = board[6];
+		c = board[9];
+		d = board[12];
+		if (a == b == c == d) {
+			if (a == "O" || a == "X") bool = true;
+		}
+	}
+	return end;
+}
